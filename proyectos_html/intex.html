@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carta para el amor de mi vida</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #fce4ec;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .carta-container {
+      perspective: 1000px;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .carta {
+      width: 350px;
+      height: 240px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      cursor: pointer;
+    }
+
+    .carta.abierta {
+      transform: rotateY(180deg);
+    }
+
+    .cara, .contenido {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      backface-visibility: hidden;
+    }
+
+    .cara {
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .cara h2 {
+      color: #e91e63;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .contenido {
+      background: white;
+      transform: rotateY(180deg);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .contenido h1 {
+      font-size: 1.3rem;
+      color: #c2185b;
+      margin-bottom: 10px;
+    }
+
+    .contenido p {
+      color: #444;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .mensaje-final {
+      margin-top: 10px;
+      font-style: italic;
+      color: #9c27b0;
+    }
+
+    #countdown, #final-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: #d81b60;
+      text-align: center;
+      display: none;
+      z-index: 10;
+    }
+
+    #final-message {
+      font-size: 2rem;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    video {
+      width: 320px;
+      max-width: 90%;
+      border-radius: 12px;
+      margin-top: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 5s linear infinite;
+      opacity: 0.8;
+      z-index: 5;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: 0;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100vh;
+        transform: translateX(-50px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="carta-container" id="cartaContainer">
+  <div class="carta" onclick="abrirCarta(this)">
+    <div class="cara">
+      <h2>💌 Haz clic para abrir la carta 💌</h2>
+    </div>
+    <div class="contenido">
+      <h1>En este momento va a aparecer,</h1>
+      <p>el amor de mi vida y mi futura esposa 💖<br><br>
+        Gracias por existir, por cada sonrisa, por cada momento. Esta carta es solo para recordarte cuánto te amo.
+      </p>
+      <div class="mensaje-final">Te amaré por siempre...</div>
+    </div>
+  </div>
+</div>
+
+<div id="countdown"></div>
+
+<div id="final-message">
+  <div>Es usted mi amor ❤️</div>
+  <video src="video.mp4" autoplay muted loop controls></video>
+</div>
+
+<script>
+  function abrirCarta(carta) {
+    carta.classList.add('abierta');
+    setTimeout(() => {
+      document.getElementById("cartaContainer").style.display = "none";
+      iniciarCuentaRegresiva();
+    }, 7000); // 7 segundos de carta visible
+  }
+
+  function iniciarCuentaRegresiva() {
+    const countdown = document.getElementById("countdown");
+    let segundos = 3;
+    countdown.style.display = "block";
+    countdown.textContent = segundos;
+
+    const intervalo = setInterval(() => {
+      segundos--;
+      if (segundos > 0) {
+        countdown.textContent = segundos;
+      } else {
+        clearInterval(intervalo);
+        countdown.style.display = "none";
+        mostrarMensajeFinal();
+      }
+    }, 1000);
+  }
+
+  function mostrarMensajeFinal() {
+    const finalMessage = document.getElementById("final-message");
+    finalMessage.style.display = "flex";
+
+    for (let i = 0; i < 30; i++) {
+      crearCorazon();
+    }
+  }
+
+  function crearCorazon() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.bottom = "0px";
+    heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 6000);
+  }
+</script>
+
+</body>
+</html>
